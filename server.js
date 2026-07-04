@@ -96,17 +96,20 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // RATE LIMITING (applies to every request; route-specific limiters are added below)
 app.use(generalLimiter);
-
+app.set("trust proxy", 1);
 // SESSION
+app.set("trust proxy", 1);
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
+        proxy: true,
         cookie: {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             maxAge: 24 * 60 * 60 * 1000,
         },
     })
