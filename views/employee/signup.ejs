@@ -1,0 +1,123 @@
+<!-- Employee Login -->
+
+<% layout('./layouts/boilerplate') %>
+
+    <title>Employee Sign In - Memora AI</title>
+
+    <div class="auth-wrapper">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+
+                <a href="/" class="lp-logo" style="justify-content:center; margin-bottom:1rem;">
+                    <i class="fa-solid fa-brain"></i> Memora AI
+                </a>
+
+                <h2>Employee Sign In</h2>
+
+                <p style="color:#6c757d; margin-top:8px;">
+                    Access your Memora AI workspace.
+                </p>
+
+            </div>
+
+            <form action="/employee-login" method="POST" class="needs-validation" novalidate>
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Employee Email
+                    </label>
+
+                    <input type="email" name="email" class="form-input form-control" placeholder="employee@company.com"
+                        autocomplete="email" required>
+
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="password" class="form-input form-control"
+                            placeholder="Enter your password" minlength="8" required>
+
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            Show
+                        </button>
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please enter your password.
+                    </div>
+
+                </div>
+                <!-- REMEMBER ME -->
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    margin-bottom:20px;
+                ">
+
+                    <div>
+
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+
+                        <label for="rememberMe">
+                            Remember Me
+                        </label>
+
+                    </div>
+
+                    <a href="/employee/forgot-password">
+                        Forgot your password?
+                    </a>
+
+                </div>
+
+                <!-- LOGIN BUTTON -->
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Sign In
+                </button>
+
+            </form>
+
+            <!-- FOOTER -->
+
+            <div class="auth-footer-text" style="margin-top:25px;">
+
+                Need to create a company workspace?
+
+                <a href="/signup-company">
+                    Register Your Company
+                </a>
+
+            </div>
+
+            <div class="auth-footer-text" style="margin-top:12px;">
+
+                Joining your company for the first time?
+
+                <a href="/signup-employee">
+                    Create Employee Account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="/js/c.js"></script>

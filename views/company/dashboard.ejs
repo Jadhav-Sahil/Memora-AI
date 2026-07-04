@@ -1,0 +1,124 @@
+<% layout('./layouts/dashboard') %>
+    <link rel="stylesheet" href="/css/a.css">
+    <div class="main-content">
+
+        <!-- Company Code Banner -->
+        <div class="company-code-banner fade-up">
+            <div class="company-code-left">
+                <div class="company-code-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+                <div class="company-code-info">
+                    <span class="company-code-label">Your Company Code</span>
+                    <span class="company-code-value" id="companyCodeText">
+                        <%= companyCode %>
+                    </span>
+                </div>
+            </div>
+            <div class="company-code-right">
+                <span class="company-code-hint">Share this code with employees to join</span>
+            </div>
+        </div>
+
+        <!-- KPI Stats -->
+        <div class="kpi-grid">
+
+            <div class="kpi-card kpi-card-blue fade-up">
+                <div class="kpi-header">
+                    <span class="kpi-label">Total Meetings</span>
+                    <div class="kpi-icon"><i class="bi bi-camera-video-fill"></i></div>
+                </div>
+                <div class="kpi-value">
+                    <%= meetings.length %>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-card-green fade-up">
+                <div class="kpi-header">
+                    <span class="kpi-label">Employees</span>
+                    <div class="kpi-icon" style="background: rgba(16,185,129,0.1); color: #10b981;">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">
+                    <%= employees.length %>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-card-amber fade-up">
+                <div class="kpi-header">
+                    <span class="kpi-label">Pending Meetings</span>
+                    <div class="kpi-icon" style="background: rgba(245,158,11,0.1); color: #f59e0b;">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">
+                    <%= meetings.filter(m=> m.transcribeStatus === 'pending').length %>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-card-rose fade-up">
+                <div class="kpi-header">
+                    <span class="kpi-label">Transcripts Generated</span>
+                    <div class="kpi-icon" style="background: rgba(244,63,94,0.1); color: #f43f5e;">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">
+                    <%= transcribe.length %>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+        <p class="section-title">Quick Actions</p>
+
+        <div class="dash-grid">
+
+            <div class="dash-card fade-up">
+                <div class="dash-icon"><i class="bi bi-mic-fill"></i></div>
+                <h5>Upload Meeting</h5>
+                <p>Upload meeting recordings for AI-powered processing and transcription.</p>
+                <div class="dash-card-footer">
+                    <a href="/upload-meeting" class="btn btn-primary btn-sm">
+                        <i class="bi bi-upload"></i> Upload Now
+                    </a>
+                </div>
+            </div>
+
+            <div class="dash-card fade-up">
+                <div class="dash-icon" style="background: rgba(16,185,129,0.1); color: #10b981;">
+                    <i class="bi bi-folder2-open"></i>
+                </div>
+                <h5>Meeting History</h5>
+                <p>View all past meetings, transcripts, and AI-generated summaries.</p>
+                <div class="dash-card-footer">
+                    <a href="/meeting-history" class="btn btn-soft btn-sm">
+                        <i class="bi bi-clock-history"></i> View History
+                    </a>
+                </div>
+            </div>
+
+            <div class="dash-card fade-up">
+                <div class="dash-icon" style="background: rgba(245,158,11,0.1); color: #f59e0b;">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <h5>Employees</h5>
+                <p>Manage employee profiles, roles, and access control settings.</p>
+                <div class="dash-card-footer">
+                    <a href="/employees" class="btn btn-outline btn-sm">
+                        <i class="bi bi-person-gear"></i> Manage
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="copy-toast" id="copyToast">
+        <i class="bi bi-check-circle-fill"></i> Company code copied!
+    </div>
+
+    <script src="/js/dashboard.js"></script>

@@ -1,0 +1,127 @@
+<% layout('./layouts/dashboard') %>
+
+    <div class="history-container">
+
+        <div class="page-header">
+            <h1>
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Meeting History
+            </h1>
+
+            <p>
+                View all uploaded meetings and generated transcripts.
+            </p>
+        </div>
+
+        <% if (meetings.length===0) { %>
+
+            <div class="empty-state">
+                <i class="fa-solid fa-folder-open"></i>
+                <h3>No Meetings Found</h3>
+                <p>Upload your first meeting recording to get started.</p>
+            </div>
+
+            <% } else { %>
+
+                <div class="history-table">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Meeting</th>
+                                <th>Uploaded</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <% meetings.forEach((meeting)=> { %>
+
+                                <tr>
+
+                                    <td>
+                                        <div class="meeting-info">
+
+                                            <div class="meeting-icon">
+                                                <i class="fa-solid fa-file-audio"></i>
+                                            </div>
+
+                                            <div>
+                                                <h4>
+                                                    <%= meeting.fileName %>
+                                                </h4>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <%= new Date(meeting.uploadedAt).toLocaleDateString("en-IN", { day: "2-digit" ,
+                                            month: "short" , year: "numeric" }) %>
+                                    </td>
+
+                                    <td>
+
+                                        <% if (meeting.transcribeStatus==="completed" ) { %>
+
+                                            <span class="status completed">
+                                                <i class="fa-solid fa-circle-check"></i>
+                                                Completed
+                                            </span>
+
+                                            <% } else { %>
+
+                                                <span class="status pending">
+                                                    <i class="fa-solid fa-clock"></i>
+                                                    Pending
+                                                </span>
+
+                                                <% } %>
+
+                                    </td>
+
+                                    <td>
+
+                                        <% if (meeting.transcribeStatus==="pending" ) { %>
+
+                                            <a href="/meetings/<%= meeting._id %>/transcribe" class="btn btn-primary">
+                                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                                Transcribe
+                                            </a>
+
+                                            <% } else if (transcriptMap[meeting._id]) { %>
+
+                                                <a href="/transcript/<%= transcriptMap[meeting._id]._id %>"
+                                                    class="btn btn-success">
+                                                    <i class="fa-solid fa-file-lines"></i>
+                                                    View Transcript
+                                                </a>
+
+                                                <% } else { %>
+
+                                                    <span class="btn btn-disabled">
+                                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                                        Transcript Missing
+                                                    </span>
+
+                                                    <% } %>
+
+                                    </td>
+
+                                </tr>
+
+                                <% }) %>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <% } %>
+
+    </div>

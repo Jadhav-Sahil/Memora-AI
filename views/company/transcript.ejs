@@ -1,0 +1,759 @@
+<% layout('./layouts/dashboard') %>
+    <link rel="stylesheet" href="/css/a.css">
+    <style>
+        .tp {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 5rem;
+        }
+
+        .tp-back {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: .82rem;
+            color: var(--color-text-muted, #888);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color .15s;
+        }
+
+        .tp-back:hover {
+            color: var(--color-text, #111);
+        }
+
+        .tp-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .tp-eyebrow {
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--color-text-muted, #999);
+            margin: 0 0 .35rem;
+        }
+
+        .tp-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            margin: 0 0 .75rem;
+            color: var(--color-text, #111);
+            line-height: 1.25;
+        }
+
+        .tp-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .6rem;
+            font-size: .8rem;
+            color: var(--color-text-muted, #999);
+        }
+
+        .tp-meta i {
+            margin-right: .25rem;
+        }
+
+        .tp-tag {
+            background: var(--color-surface-2, #f3f3f3);
+            color: var(--color-text-muted, #777);
+            padding: .15rem .55rem;
+            border-radius: 99px;
+            font-size: .75rem;
+        }
+
+        .tp-health {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            background: var(--color-surface-2, #f8f8f8);
+            margin-bottom: 2.5rem;
+        }
+
+        .hp-ring {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+        }
+
+        .hp-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: var(--color-border, #e5e5e5);
+            stroke-width: 6;
+        }
+
+        .ring-fill {
+            fill: none;
+            stroke: #4f8ef7;
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 138;
+        }
+
+        .hp-num {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--color-text, #111);
+        }
+
+        .hp-label {
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--color-text-muted, #999);
+            margin: 0 0 .4rem;
+        }
+
+        .hp-dims {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .hp-dim {
+            font-size: .76rem;
+            padding: .15rem .6rem;
+            border-radius: 99px;
+            background: var(--color-surface, #fff);
+            border: 1px solid var(--color-border, #e8e8e8);
+            color: var(--color-text-muted, #777);
+        }
+
+        .hp-notes {
+            font-size: .82rem;
+            color: var(--color-text-muted, #888);
+            max-width: 300px;
+        }
+
+        .tp-section {
+            padding: 1.75rem 0;
+            border-top: 1px solid var(--color-border, #ebebeb);
+        }
+
+        .ts-head {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-bottom: 1rem;
+        }
+
+        .ts-head h2 {
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--color-text-muted, #999);
+            margin: 0;
+            flex: 1;
+        }
+
+        .ts-icon {
+            font-size: .85rem;
+        }
+
+        .ts-icon--blue {
+            color: #4f8ef7;
+        }
+
+        .ts-icon--green {
+            color: #3cb97a;
+        }
+
+        .ts-icon--amber {
+            color: #e6a32e;
+        }
+
+        .ts-icon--red {
+            color: #e05c5c;
+        }
+
+        .ts-icon--purple {
+            color: #8b6cf7;
+        }
+
+        .ts-icon--teal {
+            color: #2ab8a8;
+        }
+
+        .ts-count {
+            font-size: .72rem;
+            font-weight: 600;
+            padding: .1rem .45rem;
+            border-radius: 99px;
+            background: var(--color-surface-2, #f0f0f0);
+            color: var(--color-text-muted, #888);
+        }
+
+        .tp-summary {
+            font-size: .92rem;
+            line-height: 1.7;
+            color: var(--color-text, #333);
+            margin: 0;
+        }
+
+        .tp-transcript {
+            font-size: .88rem;
+            line-height: 1.8;
+            color: var(--color-text, #444);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .action-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+        }
+
+        .action-item {
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start;
+            padding: .6rem .75rem;
+            border-radius: 8px;
+            background: var(--color-surface-2, #f8f8f8);
+        }
+
+        .action-check {
+            color: #3cb97a;
+            margin-top: .05rem;
+            flex-shrink: 0;
+        }
+
+        .action-task {
+            font-size: .88rem;
+            color: var(--color-text, #222);
+            margin: 0 0 .3rem;
+        }
+
+        .action-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            font-size: .76rem;
+            color: var(--color-text-muted, #999);
+        }
+
+        .action-meta i {
+            margin-right: .2rem;
+        }
+
+        .pill-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+        }
+
+        .pill-item {
+            font-size: .86rem;
+            padding: .45rem .7rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem;
+            color: var(--color-text, #333);
+            background: var(--color-surface-2, #f8f8f8);
+        }
+
+        .pill-item i {
+            flex-shrink: 0;
+            margin-top: .2rem;
+        }
+
+        .pill-item--amber {
+            background: #fdf5e6;
+            color: #8a5e00;
+        }
+
+        .pill-item--teal {
+            background: #e6f7f5;
+            color: #1a6e66;
+        }
+
+        .deadline-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .deadline-item {
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start;
+            padding: .65rem 0;
+            border-bottom: 1px solid var(--color-border, #f0f0f0);
+        }
+
+        .deadline-item:last-child {
+            border-bottom: none;
+        }
+
+        .deadline-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e05c5c;
+            flex-shrink: 0;
+            margin-top: .4rem;
+        }
+
+        .deadline-desc {
+            font-size: .88rem;
+            color: var(--color-text, #222);
+            margin: 0 0 .25rem;
+        }
+
+        .deadline-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+            font-size: .76rem;
+            color: var(--color-text-muted, #999);
+        }
+
+        .deadline-meta i {
+            margin-right: .2rem;
+        }
+
+        .risk-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+        }
+
+        .risk-item {
+            font-size: .86rem;
+            color: #7a2a2a;
+            background: #fdf0f0;
+            padding: .45rem .7rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem;
+        }
+
+        .risk-item i {
+            flex-shrink: 0;
+            margin-top: .15rem;
+            color: #e05c5c;
+        }
+
+        .q-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .q-item {
+            display: flex;
+            gap: .75rem;
+            padding: .65rem 0;
+            border-bottom: 1px solid var(--color-border, #f0f0f0);
+            align-items: flex-start;
+        }
+
+        .q-item:last-child {
+            border-bottom: none;
+        }
+
+        .q-status {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .65rem;
+            flex-shrink: 0;
+            margin-top: .1rem;
+        }
+
+        .q-resolved {
+            background: #e6f7ee;
+            color: #2a8a5a;
+        }
+
+        .q-open {
+            background: #f5f0ff;
+            color: #7050d0;
+        }
+
+        .q-text {
+            font-size: .88rem;
+            color: var(--color-text, #222);
+            margin: 0 0 .25rem;
+        }
+
+        .q-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+            font-size: .76rem;
+            color: var(--color-text-muted, #999);
+            align-items: center;
+        }
+
+        .q-meta i {
+            margin-right: .2rem;
+        }
+
+        .q-badge {
+            font-size: .7rem;
+            padding: .1rem .4rem;
+            border-radius: 99px;
+            font-weight: 600;
+        }
+
+        .q-badge--open {
+            background: #ede8ff;
+            color: #5e3fc0;
+        }
+
+        .q-badge--resolved {
+            background: #e3f5ec;
+            color: #207a50;
+        }
+
+        .warn-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: .35rem;
+        }
+
+        .warn-item {
+            font-size: .84rem;
+            color: #7a5800;
+            display: flex;
+            gap: .5rem;
+            align-items: flex-start;
+            padding: .4rem 0;
+        }
+
+        .warn-item i {
+            color: #e6a32e;
+            flex-shrink: 0;
+            margin-top: .15rem;
+        }
+
+        @media (max-width: 560px) {
+            .tp-health {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+
+    <div class="tp">
+
+        <a href="/meeting-history" class="tp-back">
+            <i class="fa-solid fa-arrow-left"></i> Back to History
+        </a>
+
+        <div class="tp-header">
+            <p class="tp-eyebrow">Meeting Transcript</p>
+            <h1 class="tp-title">
+                <%= transcript.meeting.fileName %>
+            </h1>
+            <div class="tp-meta">
+                <span><i class="fa-regular fa-calendar"></i>
+                    <%= new Date(transcript.createdAt).toLocaleDateString("en-IN", { day: "2-digit" , month: "short" ,
+                        year: "numeric" }) %>
+                </span>
+                <span><i class="fa-regular fa-clock"></i>
+                    <%= new Date(transcript.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit" , minute: "2-digit"
+                        }) %>
+                </span>
+                <% if (transcript.projectTags && transcript.projectTags.length> 0) { %>
+                    <% transcript.projectTags.forEach(tag=> { %><span class="tp-tag">#&nbsp;<%= tag %></span>
+                        <% }) %>
+                            <% } %>
+            </div>
+        </div>
+
+        <% if (transcript.meetingHealth) { %>
+            <div class="tp-health">
+                <div class="hp-ring">
+                    <svg viewBox="0 0 56 56" width="56" height="56">
+                        <circle cx="28" cy="28" r="22" class="ring-bg" />
+                        <circle cx="28" cy="28" r="22" class="ring-fill"
+                            style="stroke-dashoffset: calc(138 - (138 * <%= transcript.meetingHealth.score || 0 %>) / 100)" />
+                    </svg>
+                    <span class="hp-num">
+                        <%= transcript.meetingHealth.score || 0 %>
+                    </span>
+                </div>
+                <div>
+                    <p class="hp-label">Meeting Health</p>
+                    <div class="hp-dims">
+                        <% if (transcript.meetingHealth.clarity) { %><span class="hp-dim">Clarity · <%=
+                                    transcript.meetingHealth.clarity %></span>
+                            <% } %>
+                                <% if (transcript.meetingHealth.actionability) { %><span class="hp-dim">Action · <%=
+                                            transcript.meetingHealth.actionability %></span>
+                                    <% } %>
+                                        <% if (transcript.meetingHealth.participation) { %><span class="hp-dim">People ·
+                                                <%= transcript.meetingHealth.participation %>
+                                            </span>
+                                            <% } %>
+                    </div>
+                </div>
+                <% if (transcript.meetingHealth.notes) { %>
+                    <p class="hp-notes">
+                        <%= transcript.meetingHealth.notes %>
+                    </p>
+                    <% } %>
+            </div>
+            <% } %>
+
+                <% if (transcript.summary) { %>
+                    <div class="tp-section">
+                        <div class="ts-head">
+                            <i class="fa-solid fa-align-left ts-icon ts-icon--blue"></i>
+                            <h2>Summary</h2>
+                        </div>
+                        <p class="tp-summary">
+                            <%= transcript.summary %>
+                        </p>
+                    </div>
+                    <% } %>
+
+                        <% if (transcript.actionItems && transcript.actionItems.length> 0) { %>
+                            <div class="tp-section">
+                                <div class="ts-head">
+                                    <i class="fa-solid fa-list-check ts-icon ts-icon--green"></i>
+                                    <h2>Action Items</h2>
+                                    <span class="ts-count">
+                                        <%= transcript.actionItems.length %>
+                                    </span>
+                                </div>
+                                <ul class="action-list">
+                                    <% transcript.actionItems.forEach(item=> { %>
+                                        <li class="action-item">
+                                            <div class="action-check"><i class="fa-regular fa-circle-check"></i></div>
+                                            <div>
+                                                <p class="action-task">
+                                                    <%= item.task %>
+                                                </p>
+                                                <div class="action-meta">
+                                                    <% if (item.assignee) { %><span><i class="fa-regular fa-user"></i>
+                                                            <%= item.assignee %>
+                                                        </span>
+                                                        <% } %>
+                                                            <% if (item.deadline) { %><span><i
+                                                                        class="fa-regular fa-calendar-check"></i>
+                                                                    <%= item.deadline %>
+                                                                </span>
+                                                                <% } %>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </div>
+                            <% } %>
+
+                                <% if (transcript.keyDecisions && transcript.keyDecisions.length> 0) { %>
+                                    <div class="tp-section">
+                                        <div class="ts-head">
+                                            <i class="fa-solid fa-gavel ts-icon ts-icon--amber"></i>
+                                            <h2>Key Decisions</h2>
+                                            <span class="ts-count">
+                                                <%= transcript.keyDecisions.length %>
+                                            </span>
+                                        </div>
+                                        <ul class="pill-list">
+                                            <% transcript.keyDecisions.forEach(d=> { %>
+                                                <li class="pill-item pill-item--amber"><i
+                                                        class="fa-solid fa-diamond fa-xs"></i>
+                                                    <%= d %>
+                                                </li>
+                                                <% }) %>
+                                        </ul>
+                                    </div>
+                                    <% } %>
+
+                                        <% if (transcript.deadlines && transcript.deadlines.length> 0) { %>
+                                            <div class="tp-section">
+                                                <div class="ts-head">
+                                                    <i class="fa-solid fa-flag ts-icon ts-icon--red"></i>
+                                                    <h2>Deadlines</h2>
+                                                </div>
+                                                <ul class="deadline-list">
+                                                    <% transcript.deadlines.forEach(dl=> { %>
+                                                        <li class="deadline-item">
+                                                            <div class="deadline-dot"></div>
+                                                            <div>
+                                                                <p class="deadline-desc">
+                                                                    <%= dl.description %>
+                                                                </p>
+                                                                <div class="deadline-meta">
+                                                                    <% if (dl.date) { %><span><i
+                                                                                class="fa-regular fa-calendar"></i>
+                                                                            <%= dl.date %>
+                                                                        </span>
+                                                                        <% } %>
+                                                                            <% if (dl.assignee) { %><span><i
+                                                                                        class="fa-regular fa-user"></i>
+                                                                                    <%= dl.assignee %>
+                                                                                </span>
+                                                                                <% } %>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <% }) %>
+                                                </ul>
+                                            </div>
+                                            <% } %>
+
+                                                <% if (transcript.goalsMentioned && transcript.goalsMentioned.length> 0)
+                                                    { %>
+                                                    <div class="tp-section">
+                                                        <div class="ts-head">
+                                                            <i class="fa-solid fa-bullseye ts-icon ts-icon--teal"></i>
+                                                            <h2>Goals Mentioned</h2>
+                                                        </div>
+                                                        <ul class="pill-list">
+                                                            <% transcript.goalsMentioned.forEach(g=> { %>
+                                                                <li class="pill-item pill-item--teal"><i
+                                                                        class="fa-solid fa-circle fa-xs"></i>
+                                                                    <%= g %>
+                                                                </li>
+                                                                <% }) %>
+                                                        </ul>
+                                                    </div>
+                                                    <% } %>
+
+                                                        <% if (transcript.risksAndConcerns &&
+                                                            transcript.risksAndConcerns.length> 0) { %>
+                                                            <div class="tp-section">
+                                                                <div class="ts-head">
+                                                                    <i
+                                                                        class="fa-solid fa-triangle-exclamation ts-icon ts-icon--red"></i>
+                                                                    <h2>Risks & Concerns</h2>
+                                                                    <span class="ts-count">
+                                                                        <%= transcript.risksAndConcerns.length %>
+                                                                    </span>
+                                                                </div>
+                                                                <ul class="risk-list">
+                                                                    <% transcript.risksAndConcerns.forEach(r=> { %>
+                                                                        <li class="risk-item"><i
+                                                                                class="fa-solid fa-circle-exclamation"></i>
+                                                                            <%= r %>
+                                                                        </li>
+                                                                        <% }) %>
+                                                                </ul>
+                                                            </div>
+                                                            <% } %>
+
+                                                                <% if (transcript.questionsRaised &&
+                                                                    transcript.questionsRaised.length> 0) { %>
+                                                                    <div class="tp-section">
+                                                                        <div class="ts-head">
+                                                                            <i
+                                                                                class="fa-solid fa-circle-question ts-icon ts-icon--purple"></i>
+                                                                            <h2>Questions Raised</h2>
+                                                                        </div>
+                                                                        <ul class="q-list">
+                                                                            <% transcript.questionsRaised.forEach(q=> {
+                                                                                %>
+                                                                                <li class="q-item">
+                                                                                    <div
+                                                                                        class="q-status <%= q.resolved ? 'q-resolved' : 'q-open' %>">
+                                                                                        <i
+                                                                                            class="fa-solid <%= q.resolved ? 'fa-check' : 'fa-hourglass-half' %>"></i>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <p class="q-text">
+                                                                                            <%= q.question %>
+                                                                                        </p>
+                                                                                        <div class="q-meta">
+                                                                                            <% if (q.raisedBy) { %>
+                                                                                                <span><i
+                                                                                                        class="fa-regular fa-user"></i>
+                                                                                                    <%= q.raisedBy %>
+                                                                                                </span>
+                                                                                                <% } %>
+                                                                                                    <span
+                                                                                                        class="q-badge <%= q.resolved ? 'q-badge--resolved' : 'q-badge--open' %>">
+                                                                                                        <%= q.resolved
+                                                                                                            ? 'Resolved'
+                                                                                                            : 'Open' %>
+                                                                                                    </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <% }) %>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <% } %>
+
+                                                                        <% if (transcript.confidenceWarnings &&
+                                                                            transcript.confidenceWarnings.length> 0) {
+                                                                            %>
+                                                                            <div class="tp-section">
+                                                                                <div class="ts-head">
+                                                                                    <i
+                                                                                        class="fa-solid fa-shield-halved ts-icon ts-icon--amber"></i>
+                                                                                    <h2>Confidence Warnings</h2>
+                                                                                </div>
+                                                                                <ul class="warn-list">
+                                                                                    <%
+                                                                                        transcript.confidenceWarnings.forEach(w=>
+                                                                                        { %>
+                                                                                        <li class="warn-item"><i
+                                                                                                class="fa-solid fa-circle-dot"></i>
+                                                                                            <%= w %>
+                                                                                        </li>
+                                                                                        <% }) %>
+                                                                                </ul>
+                                                                            </div>
+                                                                            <% } %>
+
+                                                                                <% if (transcript.correctedTranscript) {
+                                                                                    %>
+                                                                                    <div class="tp-section">
+                                                                                        <div class="ts-head">
+                                                                                            <i
+                                                                                                class="fa-solid fa-scroll ts-icon ts-icon--purple"></i>
+                                                                                            <h2>Full Transcript</h2>
+                                                                                        </div>
+                                                                                        <div class="tp-transcript"
+                                                                                            id="transcriptText">
+                                                                                            <%= transcript.correctedTranscript
+                                                                                                %>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <% } %>
+
+    </div>

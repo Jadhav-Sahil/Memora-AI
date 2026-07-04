@@ -1,0 +1,182 @@
+<% layout('./layouts/boilerplate') %>
+    <nav class="lp-navbar">
+        <a href="/" class="lp-logo">
+            <i class="fa-solid fa-brain" style="color: var(--color-primary)"></i> Memora AI
+        </a>
+        <button class="lp-hamburger" id="menuBtn">
+            ☰
+        </button>
+
+
+        <ul class="lp-nav-links" id="mobileMenu">
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Solutions</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Pricing</a></li>
+        </ul>
+        <div class="lp-nav-actions">
+            <a href="/login" class="btn btn-secondary">Login</a>
+            <a href="/signup-company" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <header class="lp-hero">
+        <div class="lp-hero-content">
+            <h1>Turn Meetings Into Company Knowledge</h1>
+            <p>Capture discussions, extract decisions, track goals, and build a searchable company memory powered by
+                advanced AI architecture.</p>
+            <div class="lp-hero-ctas">
+                <a href="/signup-company" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Start Free</a>
+                <a href="/signup-employee" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">
+                    Employee Signup
+                </a>
+            </div>
+        </div>
+        <div class="lp-hero-preview">
+            <div
+                style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; color: var(--color-primary);">
+                    <i class="fa-solid fa-circle" style="color: var(--color-success); font-size: 8px;"></i>
+                    Project Alpha Alignment
+                </span>
+                <span style="color: var(--color-text-muted);">Yesterday</span>
+            </div>
+
+            <p style="font-weight: 600; margin-bottom: 0.25rem;">Key Decisions</p>
+
+            <ul style="list-style: none; padding-left: 0; margin-bottom: 0.75rem; color: var(--color-text-muted);">
+                <li>✓ Approved cloud migration strategy to AWS regional infrastructure for improved scalability and
+                    latency optimization.</li>
+                <li>✓ Prioritized backend integration and Q3 milestone delivery by reallocating development focus to
+                    system-critical components and stability improvements.</li>
+            </ul>
+
+            <div style="background: var(--color-bg); padding: 0.5rem; border-radius: 4px; font-size: 11px;">
+                <span class="badge" style="background-color:#28a745; color:#fff">
+                    AI Extracted Summary
+                </span>
+                <p style="margin-top: 0.25rem;">
+                    The leadership team defined deployment success metrics and strengthened risk management workflows to
+                    improve release stability and production readiness.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="lp-section"
+        style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+        <div class="lp-section-header">
+            <h2>Engineered for High-Performance Teams</h2>
+            <p>Everything you need to capture operations data metrics across administrative hierarchies.</p>
+        </div>
+        <div class="grid-3">
+            <div class="card feat-card">
+                <i class="fa-solid fa-microphone-lines"></i>
+                <h3>Meeting Transcription</h3>
+                <p>Enterprise-grade accuracy pipeline optimized for modern corporate vocabularies and multi-speaker
+                    extraction environments.</p>
+            </div>
+            <div class="card feat-card">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <h3>AI Knowledge Extraction</h3>
+                <p>Isolate structural objects seamlessly. Instantly extract summary metrics, tasks, project milestones,
+                    and decisions.</p>
+            </div>
+            <div class="card feat-card">
+                <i class="fa-solid fa-magnifying-glass-nodes"></i>
+                <h3>Company Memory Search</h3>
+                <p>Query your organizational historical knowledge graph natively using plain natural language
+                    structures.</p>
+            </div>
+            <div class="card feat-card">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>Task Tracking</h3>
+                <p>Automatically isolate operational action items from recorded media updates and map statuses onto
+                    active sprints.</p>
+            </div>
+            <div class="card feat-card">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Goal Management</h3>
+                <p>Connect operational cross-functional decisions with high-level corporate strategic goals and OKRs.
+                </p>
+            </div>
+            <div class="card feat-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Enterprise Security</h3>
+                <p>Dedicated workspace containers, automated zero-retention parameters, and compliant role authorization
+                    controls.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lp-section">
+        <div class="lp-section-header">
+            <h2>The Structural Knowledge Pipeline</h2>
+            <p>From unorganized conversations to structured, discoverable corporate infrastructure.</p>
+        </div>
+        <div class="flow-container">
+            <div class="flow-step">
+                <i class="fa-solid fa-video"
+                    style="color: var(--color-primary); font-size: 1.25rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 0.9rem; margin-bottom: 0.25rem;">1. Meeting</h4>
+                <p style="font-size: 0.75rem; color: var(--color-text-muted);">Audio/Video captured live or uploaded to
+                    cluster storage blocks.</p>
+            </div>
+            <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="flow-step">
+                <i class="fa-solid fa-file-lines"
+                    style="color: var(--color-primary); font-size: 1.25rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 0.9rem; margin-bottom: 0.25rem;">2. Transcript</h4>
+                <p style="font-size: 0.75rem; color: var(--color-text-muted);">Time-stamped, speaker-separated text logs
+                    compiled instantly.</p>
+            </div>
+            <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="flow-step">
+                <i class="fa-solid fa-bolt"
+                    style="color: var(--color-primary); font-size: 1.25rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 0.9rem; margin-bottom: 0.25rem;">3. Extraction</h4>
+                <p style="font-size: 0.75rem; color: var(--color-text-muted);">Context engines parse records for key
+                    business decisions and items.</p>
+            </div>
+            <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="flow-step">
+                <i class="fa-solid fa-database"
+                    style="color: var(--color-primary); font-size: 1.25rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 0.9rem; margin-bottom: 0.25rem;">4. Memory</h4>
+                <p style="font-size: 0.75rem; color: var(--color-text-muted);">Vectors index metadata objects securely
+                    into your workspace knowledge-base.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="lp-section"
+        style="background: #FFFFFF; border-top: 1px solid var(--color-border); max-width: 100%;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 5%;">
+            <div class="lp-section-header">
+                <h2>Enterprise-Grade Security Standards</h2>
+                <p>Designed to comply strictly with information classification models across critical industries.</p>
+            </div>
+            <div class="security-badge-grid">
+                <div class="security-card">
+                    <i class="fa-solid fa-box-archive" style="font-size: 2rem; color: var(--color-primary);"></i>
+                    <h3>Data Isolation</h3>
+                    <p>Dedicated logical container separation for corporate entity profiles.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fa-solid fa-lock" style="font-size: 2rem; color: var(--color-primary);"></i>
+                    <h3>AES-256 Encryption</h3>
+                    <p>End-to-end transport layer protection structures for stationary and active parameters.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fa-solid fa-clock-rotate-left" style="font-size: 2rem; color: var(--color-primary);"></i>
+                    <h3>Retention Policies</h3>
+                    <p>Automated granular execution timelines for compliance file pruning.</p>
+                </div>
+                <div class="security-card">
+                    <i class="fa-solid fa-passport" style="font-size: 2rem; color: var(--color-primary);"></i>
+                    <h3>SSO & RBAC Alignment</h3>
+                    <p>Native integration capability for major external identity provisioning managers.</p>
+                </div>
+            </div>
+        </div>
+    </section>

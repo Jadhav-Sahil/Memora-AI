@@ -1,0 +1,246 @@
+<% layout('./layouts/employee') %>
+
+    <div class="page">
+
+
+
+        <% if (meetings && meetings.length> 0) { %>
+
+            <div class="record-list">
+
+                <% meetings.forEach((m, idx)=> {
+                    const t = transcribe.find(tr => tr.meeting && tr.meeting.toString() === m._id.toString());
+                    %>
+
+                    <details class="record" <%=idx===0 ? "open" : "" %>>
+
+                        <summary class="record-summary">
+                            <div class="record-summary-main">
+                                <span class="record-index">
+                                    <%= String(idx + 1).padStart(2, "0" ) %>
+                                </span>
+                                <span class="record-title">
+                                    <%= m.fileName || "Untitled Meeting" %>
+                                </span>
+                            </div>
+
+                            <div class="record-summary-meta">
+                                <span class="record-date">
+                                    <%= m.uploadedAt ? new Date(m.uploadedAt).toLocaleDateString("en-US", {
+                                        day: "2-digit" , month: "short" , year: "numeric" }) : "—" %>
+                                </span>
+                                <span class="pill pill-<%= m.transcribeStatus %>">
+                                    <%= m.transcribeStatus.toUpperCase() %>
+                                </span>
+                                <span class="chevron">⌄</span>
+                            </div>
+                        </summary>
+
+                        <div class="record-body">
+
+                            <div class="field-row">
+                                <div class="field-label">File</div>
+                                <div class="field-value">
+                                    <div class="file-meta">
+                                        <span>
+                                            <%= m.fileType || "—" %>
+                                        </span>
+                                        <span class="dot">·</span>
+                                        <span>
+                                            <%= m.fileSize ? m.fileSize.toFixed(2) + " MB" : "—" %>
+                                        </span>
+                                        <span class="dot">·</span>
+                                        <a class="inline-link" href="<%= m.fileUrl %>" target="_blank"
+                                            rel="noopener">Download</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% if (m.transcribeStatus==="pending" || !t) { %>
+
+                                <div class="field-row last">
+                                    <div class="field-label">Status</div>
+                                    <div class="field-value">
+                                        <span class="empty-inline">Transcript not processed yet.</span>
+                                    </div>
+                                </div>
+
+                                <% } else { %>
+
+                                    <% if (t.meetingHealth && t.meetingHealth.score) { %>
+                                        <div class="field-row">
+                                            <div class="field-label">Meeting Health</div>
+                                            <div class="field-value">
+                                                <div class="health-row">
+                                                    <span class="health-score">
+                                                        <%= t.meetingHealth.score %>/100
+                                                    </span>
+                                                    <% if (t.meetingHealth.clarity) { %><span
+                                                            class="tag-health">Clarity: <%= t.meetingHealth.clarity %>
+                                                        </span>
+                                                        <% } %>
+                                                            <% if (t.meetingHealth.actionability) { %><span
+                                                                    class="tag-health">Actionability: <%=
+                                                                        t.meetingHealth.actionability %></span>
+                                                                <% } %>
+                                                                    <% if (t.meetingHealth.participation) { %><span
+                                                                            class="tag-health">Participation: <%=
+                                                                                t.meetingHealth.participation %></span>
+                                                                        <% } %>
+                                                </div>
+                                                <% if (t.meetingHealth.notes) { %>
+                                                    <p class="health-notes">
+                                                        <%= t.meetingHealth.notes %>
+                                                    </p>
+                                                    <% } %>
+                                            </div>
+                                        </div>
+                                        <% } %>
+
+                                            <div class="field-row">
+                                                <div class="field-label">Summary</div>
+                                                <div class="field-value">
+                                                    <%= t.summary || "No summary available." %>
+                                                </div>
+                                            </div>
+
+                                            <div class="field-row">
+                                                <div class="field-label">Transcript</div>
+                                                <div class="field-value">
+                                                    <div class="transcript-box">
+                                                        <%= t.correctedTranscript ? t.correctedTranscript.substring(0,
+                                                            500) + (t.correctedTranscript.length> 500 ? "…" : "")
+                                                            : "No transcript available." %>
+                                                    </div>
+                                                    <% if (t.correctedTranscript && t.correctedTranscript.length> 500) {
+                                                        %>
+                                                        <a class="inline-link"
+                                                            href="/employee/transcript/<%= t._id %>">View full
+                                                            transcript →</a>
+                                                        <% } %>
+                                                </div>
+                                            </div>
+
+                                            <% if (t.projectTags && t.projectTags.length) { %>
+                                                <div class="field-row">
+                                                    <div class="field-label">Project Tags</div>
+                                                    <div class="field-value">
+                                                        <div class="tag-cloud">
+                                                            <% t.projectTags.forEach(tag=> { %>
+                                                                <span class="tag-project">
+                                                                    <%= tag %>
+                                                                </span>
+                                                                <% }) %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+
+                                                    <div class="field-row">
+                                                        <div class="field-label">Questions Raised</div>
+                                                        <div class="field-value">
+                                                            <% if (t.questionsRaised && t.questionsRaised.length) { %>
+                                                                <ul class="plain-list">
+                                                                    <% t.questionsRaised.forEach(q=> { %>
+                                                                        <li>
+                                                                            <% if (typeof q==="string" ) { %>
+                                                                                <%= q %>
+                                                                                    <% } else if (q && typeof
+                                                                                        q==="object" ) { %>
+                                                                                        <%= q.question %>
+                                                                                            <% if (q.raisedBy) { %> —
+                                                                                                <%= q.raisedBy %>
+                                                                                                    <% } %>
+                                                                                                        <% if
+                                                                                                            (q.resolved)
+                                                                                                            { %> <span
+                                                                                                                class="tag-resolved">Resolved</span>
+                                                                                                            <% } %>
+                                                                                                                <% } %>
+                                                                        </li>
+                                                                        <% }) %>
+                                                                </ul>
+                                                                <% } else { %>
+                                                                    <span class="empty-inline">No questions
+                                                                        raised.</span>
+                                                                    <% } %>
+                                                        </div>
+                                                    </div>
+
+                                                    <% if (t.goalsMentioned && t.goalsMentioned.length) { %>
+                                                        <div class="field-row">
+                                                            <div class="field-label">Goals Mentioned</div>
+                                                            <div class="field-value">
+                                                                <ul class="plain-list">
+                                                                    <% t.goalsMentioned.forEach(g=> { %>
+                                                                        <li>
+                                                                            <%= typeof g==="string" ? g : (g.goal ||
+                                                                                JSON.stringify(g)) %>
+                                                                        </li>
+                                                                        <% }) %>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <% if (t.risksAndConcerns && t.risksAndConcerns.length) { %>
+                                                                <div class="field-row">
+                                                                    <div class="field-label">Risks & Concerns</div>
+                                                                    <div class="field-value">
+                                                                        <ul class="plain-list warning-list">
+                                                                            <% t.risksAndConcerns.forEach(r=> { %>
+                                                                                <li>
+                                                                                    <%= typeof r==="string" ? r :
+                                                                                        (r.risk || JSON.stringify(r)) %>
+                                                                                </li>
+                                                                                <% }) %>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <% } %>
+
+                                                                    <div class="field-row last">
+                                                                        <div class="field-label">Confidence Warnings
+                                                                        </div>
+                                                                        <div class="field-value">
+                                                                            <% if (t.confidenceWarnings &&
+                                                                                t.confidenceWarnings.length) { %>
+                                                                                <ul class="plain-list warning-list">
+                                                                                    <% t.confidenceWarnings.forEach(w=>
+                                                                                        { %>
+                                                                                        <li>
+                                                                                            <%= typeof w==="string" ? w
+                                                                                                : (w.warning ||
+                                                                                                JSON.stringify(w)) %>
+                                                                                        </li>
+                                                                                        <% }) %>
+                                                                                </ul>
+                                                                                <% } else { %>
+                                                                                    <span class="empty-inline">No
+                                                                                        confidence warnings.</span>
+                                                                                    <% } %>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <% } %>
+
+                        </div>
+
+                    </details>
+
+                    <% }) %>
+
+            </div>
+
+            <% } else { %>
+
+                <div class="empty-state">
+                    <p>No meeting insights available.</p>
+                    <span>Upload a meeting recording to generate insights.</span>
+                </div>
+
+                <% } %>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>

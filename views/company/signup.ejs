@@ -1,0 +1,115 @@
+<% layout('./layouts/boilerplate') %>
+
+    <title>Register Company - Memora AI</title>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <div class="auth-header">
+                <a href="/" class="lp-logo" style="justify-content:center;margin-bottom:1rem;">
+                    <i class="fa-solid fa-brain"></i> Memora AI
+                </a>
+
+                <h2>Create Company Account</h2>
+                <p>Initialize your organization's intelligence layer.</p>
+            </div>
+
+            <!-- ALERT -->
+            <div id="alertBox" style="display:none;margin-bottom:15px;position:relative;"></div>
+
+            <!-- MAIN FORM -->
+            <form id="signupForm" action="/signup-company" method="POST">
+
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" name="companyName" id="companyName" class="form-input form-control" required
+                        autocomplete="organization">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Administrator Email</label>
+                    <input type="email" name="email" id="email" class="form-input form-control" required
+                        autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="password" class="form-input form-control" required>
+
+                        <button type="button" id="togglePassword" class="toggle-password">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+
+                    <input type="password" name="c_password" id="c_password" class="form-input form-control" required>
+                </div>
+
+                <!-- SEND OTP -->
+                <button type="button" id="sendOtpBtn" class="btn btn-primary w-100">
+                    Send OTP
+                </button>
+
+                <!-- OTP SECTION -->
+                <div id="otpSection" style="
+                display:none;
+                margin-top:20px;
+                padding-top:20px;
+                border-top:1px solid #ddd;
+            ">
+
+                    <div class="alert alert-info">
+                        OTP sent to
+                        <strong id="sentEmail"></strong>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Enter OTP</label>
+                        <input type="text" id="otpInput" class="form-input form-control" maxlength="6">
+                    </div>
+
+                    <button type="button" id="verifyOtpBtn" class="btn btn-success w-100">
+                        Verify OTP
+                    </button>
+
+                    <div style="margin-top:15px;text-align:center;">
+
+                        <button type="button" id="resendBtn" class="btn btn-link" disabled>
+                            Resend OTP
+                        </button>
+
+                        <span id="timerText">
+                            (60s)
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- VERIFIED MESSAGE -->
+                <div id="verifiedBox" class="alert alert-success" style="display:none;margin-top:20px;">
+                    OTP Verified Successfully
+                </div>
+
+                <button type="submit" id="registerBtn" class="btn btn-primary w-100" style="display:none;">
+                    Register Company
+                </button>
+            </form>
+
+            <div class="auth-footer-text" style="margin-top:20px;">
+                Already registered?
+                <a href="/login">Sign In</a>
+            </div>
+            <div class="auth-footer-text" style="margin-top:20px;">
+                New here as an employee?
+                <a href="/signup-employee">Join your company</a>
+            </div>
+        </div>
+
+
+    </div>

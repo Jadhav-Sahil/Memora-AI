@@ -1,0 +1,115 @@
+<% layout('./layouts/boilerplate') %>
+
+    <title>Company Login - Memora AI</title>
+
+    <div class="auth-wrapper">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+
+                <a href="/" class="lp-logo" style="justify-content:center;margin-bottom:1rem;">
+                    <i class="fa-solid fa-brain"></i> Memora AI
+                </a>
+
+                <h2>Company Sign In</h2>
+
+                <p>
+                    Access your organization's intelligence platform.
+                </p>
+
+            </div>
+
+            <form action="/login" method="POST" class="needs-validation" novalidate>
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Company Email
+                    </label>
+
+                    <input type="email" name="email" class="form-input form-control" placeholder="admin@company.com"
+                        required autocomplete="email">
+
+                    <div class="invalid-feedback">
+                        Please enter a valid company email address.
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" class="form-input form-control"
+                            placeholder="Enter your password" minlength="8" required>
+
+                        <button type="button" id="togglePassword" class="toggle-password">
+                            Show
+                        </button>
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please enter a valid company Password.
+                    </div>
+
+                </div>
+
+                <!-- REMEMBER ME -->
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    margin-bottom:20px;
+                ">
+
+                    <div>
+
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+
+                        <label for="rememberMe">
+                            Remember Me
+                        </label>
+
+                    </div>
+
+                    <a href="/forgot-password">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+                <!-- LOGIN BUTTON -->
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Sign In
+                </button>
+
+            </form>
+
+            <div class="auth-footer-text" style="margin-top:20px;">
+
+                Don't have a company account?
+
+                <a href="/signup-company">
+                    Register Company
+                </a>
+
+            </div>
+            <div class="auth-footer-text" style="margin-top:20px;">
+                New here as an employee?
+                <a href="/signup-employee">Join your company</a>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="/js/d.js"></script>

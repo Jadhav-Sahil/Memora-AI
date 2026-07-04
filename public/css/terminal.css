@@ -1,0 +1,512 @@
+/* ── Reset ─────────────────────────────────────────── */
+* {
+    box-sizing: border-box;
+}
+
+/* ── Page ──────────────────────────────────────────── */
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #F8FAFC;
+    color: #111827;
+    -webkit-font-smoothing: antialiased;
+}
+
+i {
+    margin-right: 6px;
+}
+
+/* ── Container ─────────────────────────────────────── */
+.terminal-container {
+    width: 92%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 0 56px;
+}
+
+/* ── Header ────────────────────────────────────────── */
+.terminal-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.terminal-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1F4E79;
+    margin: 0 0 6px;
+}
+
+.terminal-header h1 i {
+    color: #2563EB;
+}
+
+.terminal-header p {
+    font-size: 0.875rem;
+    color: #6B7280;
+    margin: 0;
+}
+
+.terminal-header p i {
+    color: #9CA3AF;
+}
+
+/* ── Hero Card ─────────────────────────────────────── */
+.hero-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 24px 28px 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.hero-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(37, 99, 235, 0.1);
+    color: #1D4ED8;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.hero-badge i {
+    color: #1D4ED8;
+    font-size: 10px;
+}
+
+.hero-filename {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    padding-right: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hero-filename i {
+    color: #2563EB;
+}
+
+/* Player row: audio + transcribe button side by side */
+.hero-player-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.hero-player-row audio {
+    flex: 1;
+    height: 36px;
+    border-radius: 8px;
+    accent-color: #2563EB;
+    min-width: 0;
+}
+
+/* ── Transcribe Buttons ────────────────────────────── */
+.btn-transcribe {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #2563EB;
+    color: #FFFFFF;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+    text-decoration: none;
+}
+
+.btn-transcribe:hover {
+    background: #1D4ED8;
+    color: #FFFFFF;
+}
+
+.btn-transcribe i {
+    color: #FFFFFF;
+    font-size: 12px;
+    margin-right: 0;
+}
+
+.btn-transcribe-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(37, 99, 235, 0.08);
+    color: #2563EB;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+    text-decoration: none;
+}
+
+.btn-transcribe-sm:hover {
+    background: rgba(37, 99, 235, 0.15);
+    color: #1D4ED8;
+}
+
+.btn-transcribe-sm i {
+    color: #2563EB;
+    font-size: 11px;
+    margin-right: 0;
+}
+
+/* ── Hero Meta ─────────────────────────────────────── */
+.hero-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 0.75rem;
+    color: #9CA3AF;
+}
+
+.hero-meta i {
+    color: #D1D5DB;
+}
+
+/* ── Section Label ─────────────────────────────────── */
+.section-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    margin: 0 0 14px;
+}
+
+/* ── Grid ──────────────────────────────────────────── */
+.meetings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 12px;
+}
+
+/* ── Meeting Card ──────────────────────────────────── */
+.meeting-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.meeting-card:hover {
+    border-color: #93C5FD;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+}
+
+.card-filename {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-filename i {
+    color: #2563EB;
+}
+
+.meeting-card audio {
+    width: 100%;
+    height: 28px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    accent-color: #2563EB;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.6875rem;
+    color: #9CA3AF;
+    min-width: 0;
+}
+
+.card-meta span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-meta i {
+    color: #D1D5DB;
+    font-size: 10px;
+}
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 768px) {
+    .hero-player-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-player-row audio {
+        width: 100%;
+    }
+
+    .hero-filename {
+        padding-right: 100px;
+        font-size: 0.9rem;
+    }
+
+    .meetings-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .meetings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-badge {
+        font-size: 9px;
+        top: 14px;
+        right: 14px;
+    }
+}
+
+
+/* teminal -transcribe css */
+body {
+    background: #f5f5f7;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+}
+
+.mac-window {
+    width: 85%;
+    margin: 40px auto;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* TOP BAR */
+.mac-header {
+    display: flex;
+    align-items: center;
+    background: #e5e5e5;
+    padding: 10px 15px;
+}
+
+.dots span {
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.red {
+    background: #ff5f57;
+}
+
+.yellow {
+    background: #ffbd2e;
+}
+
+.green {
+    background: #28c840;
+}
+
+.title {
+    margin-left: 10px;
+    font-size: 13px;
+    color: #333;
+}
+
+/* BODY */
+.terminal-body {
+    padding: 20px;
+}
+
+.file-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#status {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+#logs {
+    background: #111;
+    color: #0f0;
+    padding: 12px;
+    border-radius: 8px;
+    height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 14px;
+    border: none;
+    background: #007aff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+#logs {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 12px;
+    border-radius: 8px;
+    height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+#logs {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 12px;
+    border-radius: 8px;
+    height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+    font-family: monospace;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    /* 👈 controls spacing tightly */
+}
+
+
+/*retry */
+.btn-retry {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 500;
+
+    border-radius: 6px;
+    border: 1px solid var(--danger-border);
+
+    background: transparent;
+    color: var(--danger);
+
+    cursor: pointer;
+
+    transition: all 0.15s ease;
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+
+.btn-retry:hover {
+    background: rgba(220, 38, 38, 0.08);
+    transform: scale(1.03);
+}
+
+.app-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 32px;
+    border-top: 1px solid var(--border-color);
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.footer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2ecc71;
+    display: inline-block;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Wrapper that holds sidebar + main content */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* The main column (topbar + page content + footer) */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+}
+
+/* The scrollable content area between topbar and footer */
+.content-wrapper {
+    flex: 1 0 auto;
+}
+
+/* Footer stays pinned at bottom, never grows to fill space */
+.app-footer {
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.app-footer {
+    border-top: 1px solid #000;
+    flex-shrink: 0;
+    margin-top: auto;
+}

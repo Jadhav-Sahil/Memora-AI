@@ -1,0 +1,61 @@
+<% layout('./layouts/dashboard') %>
+    <link rel="stylesheet" href="/css/a.css">
+    <div class="meeting-container">
+
+        <h1>
+            <i class="fa-solid fa-microphone-lines"></i>
+            Meeting Intelligence Hub
+        </h1>
+
+
+
+        <div class="meeting-grid">
+
+            <!-- Upload Recording -->
+
+            <div class="meeting-card">
+
+                <h2>
+                    <i class="fa-solid fa-file-audio"></i>
+                    Upload Meeting
+                </h2>
+
+                <p>
+                    Upload MP3 or MP4 meeting recordings.
+                </p>
+
+                <form action="/upload-meeting" method="POST" enctype="multipart/form-data" id="uploadForm"
+                    class="needs-validation" novalidate>
+
+                    <input type="file" name="meetingFile" id="meetingFile" class="form-control"
+                        accept=".mp3,.mp4,audio/*,video/*" required>
+
+                    <div class="valid-feedback">
+                        File selected successfully.
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please select an MP3 or MP4 file.
+                    </div>
+
+                    <div id="fileName"></div>
+
+                    <button type="submit">
+                        <i class="fa-solid fa-upload"></i>
+                        Upload Recording
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- Google Meet Agent -->
+
+
+
+        </div>
+
+
+    </div>
+
+    <script src="/js/uploadMeeting.js"></script>

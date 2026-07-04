@@ -1,0 +1,129 @@
+<% layout('./layouts/employee') %>
+
+    <div class="page">
+
+        <% const withContent=meetings.filter(m=> {
+            const t = transcribe.find(tr => tr.meeting && tr.meeting.toString() === m._id.toString());
+            return t && (
+            (t.actionItems && t.actionItems.length) ||
+            (t.keyDecisions && t.keyDecisions.length) ||
+            (t.deadlines && t.deadlines.length)
+            );
+            });
+            %>
+
+            <% if (withContent.length> 0) { %>
+
+                <div class="ai-list">
+
+                    <% withContent.forEach((m)=> {
+                        const t = transcribe.find(tr => tr.meeting && tr.meeting.toString() === m._id.toString());
+                        %>
+
+                        <div class="ai-block">
+
+                            <div class="ai-block-header">
+                                <span class="ai-meeting-title">
+                                    <%= m.fileName || "Untitled Meeting" %>
+                                </span>
+                                <span class="ai-meeting-date">
+                                    <%= m.uploadedAt ? new Date(m.uploadedAt).toLocaleDateString("en-US", {
+                                        day: "2-digit" , month: "short" , year: "numeric" }) : "—" %>
+                                </span>
+                            </div>
+
+                            <% if (t.actionItems && t.actionItems.length> 0) { %>
+                                <div class="ai-section">
+                                    <div class="ai-section-label">Action Items</div>
+                                    <ul class="ai-bullet-list">
+                                        <% t.actionItems.forEach(item=> { %>
+                                            <li>
+                                                <% if (typeof item==="string" ) { %>
+                                                    <%= item %>
+                                                        <% } else if (item && typeof item==="object" ) { %>
+                                                            <% if (item.task) { %><strong>
+                                                                    <%= item.task %>
+                                                                </strong>
+                                                                <% } %>
+                                                                    <% if (item.assignee) { %> — <%= item.assignee %>
+                                                                            <% } %>
+                                                                                <% if (item.deadline) { %> (<%=
+                                                                                        item.deadline %>)<% } %>
+                                                                                            <% } %>
+                                            </li>
+                                            <% }) %>
+                                    </ul>
+                                </div>
+                                <% } %>
+
+                                    <% if (t.deadlines && t.deadlines.length> 0) { %>
+                                        <div class="ai-section">
+                                            <div class="ai-section-label">Deadlines</div>
+                                            <ul class="ai-bullet-list">
+                                                <% t.deadlines.forEach(deadline=> { %>
+                                                    <li>
+                                                        <% if (typeof deadline==="string" ) { %>
+                                                            <%= deadline %>
+                                                                <% } else if (deadline && typeof deadline==="object" ) {
+                                                                    %>
+                                                                    <% if (deadline.description) { %><strong>
+                                                                            <%= deadline.description %>
+                                                                        </strong>
+                                                                        <% } %>
+                                                                            <% if (deadline.date) { %> — <%=
+                                                                                    deadline.date %>
+                                                                                    <% } %>
+                                                                                        <% if (deadline.assignee) { %> (
+                                                                                            <%= deadline.assignee %>)<%
+                                                                                                    } %>
+                                                                                                    <% } %>
+                                                    </li>
+                                                    <% }) %>
+                                            </ul>
+                                        </div>
+                                        <% } %>
+
+                                            <% if (t.keyDecisions && t.keyDecisions.length> 0) { %>
+                                                <div class="ai-section">
+                                                    <div class="ai-section-label">Key Decisions</div>
+                                                    <ul class="ai-bullet-list">
+                                                        <% t.keyDecisions.forEach(decision=> { %>
+                                                            <li>
+                                                                <% if (typeof decision==="string" ) { %>
+                                                                    <%= decision %>
+                                                                        <% } else if (decision && typeof
+                                                                            decision==="object" ) { %>
+                                                                            <% if (decision.decision) { %><strong>
+                                                                                    <%= decision.decision %>
+                                                                                </strong>
+                                                                                <% } %>
+                                                                                    <% if (decision.reason) { %> — <%=
+                                                                                            decision.reason %>
+                                                                                            <% } %>
+                                                                                                <% if (decision.owner) {
+                                                                                                    %> (<%=
+                                                                                                        decision.owner
+                                                                                                        %>)<% } %>
+                                                                                                            <% } %>
+                                                            </li>
+                                                            <% }) %>
+                                                    </ul>
+                                                </div>
+                                                <% } %>
+
+                        </div>
+
+                        <% }) %>
+
+                </div>
+
+                <% } else { %>
+
+                    <div class="empty-state">
+                        <p>No action items yet.</p>
+                        <span>Action items and decisions will appear here once meetings are processed.</span>
+                    </div>
+
+                    <% } %>
+
+    </div>

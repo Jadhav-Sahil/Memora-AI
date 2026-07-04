@@ -1,0 +1,74 @@
+<% layout('./layouts/employee') %>
+
+    <div class="profile-page">
+        <div class="page-header">
+            <h1>My Profile</h1>
+        </div>
+
+        <div class="section">
+            <div class="section-label">Personal Information</div>
+            <table class="detail-table">
+                <tr>
+                    <th>Name</th>
+                    <td>
+                        <%= typeof employee.name==="string" ? employee.name : "—" %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        <%= typeof employee.email==="string" ? employee.email : "—" %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Role</th>
+                    <td>
+                        <span class="status-pill">
+                            <%= typeof employee.role==="string" ? employee.role : "employee" %>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <span class="status-pill <%= employee.isActive ? 'active' : 'inactive' %>">
+                            <%= employee.isActive ? "Active" : "Inactive" %>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Joined On</th>
+                    <td>
+                        <%= employee.createdAt ? new Date(employee.createdAt).toLocaleDateString("en-IN", {
+                            day: "2-digit" , month: "short" , year: "numeric" }) : "—" %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-label">Company Information</div>
+            <table class="detail-table">
+                <tr>
+                    <th>Company Name</th>
+                    <td>
+                        <%= typeof company.companyName==="string" ? company.companyName : "—" %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Company Email</th>
+                    <td>
+                        <%= typeof company.companyEmail==="string" ? company.companyEmail : "—" %>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Company Since</th>
+                    <td>
+                        <%= company.createdAt ? new Date(company.createdAt).toLocaleDateString("en-IN", { day: "2-digit"
+                            , month: "short" , year: "numeric" }) : "—" %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>

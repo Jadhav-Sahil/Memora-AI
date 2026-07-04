@@ -1,0 +1,133 @@
+<% layout('./layouts/employee') %>
+
+    <div class="page">
+
+
+
+        <% const tagCounts={}; const riskCounts={}; const goalCounts={}; transcribe.forEach(t=> {
+            (t.projectTags || []).forEach(tag => {
+            const key = typeof tag === "string" ? tag : (tag.tag || tag.name || JSON.stringify(tag));
+            tagCounts[key] = (tagCounts[key] || 0) + 1;
+            });
+            (t.risksAndConcerns || []).forEach(r => {
+            const key = typeof r === "string" ? r : (r.risk || JSON.stringify(r));
+            riskCounts[key] = (riskCounts[key] || 0) + 1;
+            });
+            (t.goalsMentioned || []).forEach(g => {
+            const key = typeof g === "string" ? g : (g.goal || JSON.stringify(g));
+            goalCounts[key] = (goalCounts[key] || 0) + 1;
+            });
+            });
+
+            const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+            const sortedRisks = Object.entries(riskCounts).sort((a, b) => b[1] - a[1]);
+            const sortedGoals = Object.entries(goalCounts).sort((a, b) => b[1] - a[1]);
+            const maxTagCount = sortedTags.length ? sortedTags[0][1] : 1;
+            %>
+
+            <% if (meetings.length===0) { %>
+
+                <div class="empty-state">
+                    <p>No analytics available yet.</p>
+                    <span>Data will appear once meetings are processed.</span>
+                </div>
+
+                <% } else { %>
+
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-num">
+                                <%= meetings.length %>
+                            </div>
+                            <div class="stat-label">Total Meetings</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-num">
+                                <%= sortedTags.length %>
+                            </div>
+                            <div class="stat-label">Project Tags</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-num">
+                                <%= sortedRisks.length %>
+                            </div>
+                            <div class="stat-label">Distinct Risks</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-num">
+                                <%= sortedGoals.length %>
+                            </div>
+                            <div class="stat-label">Goals Mentioned</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="section-title">Project Tags</div>
+                        <% if (sortedTags.length) { %>
+                            <div class="bar-list">
+                                <% sortedTags.forEach(([tag, count])=> { %>
+                                    <div class="bar-row">
+                                        <span class="bar-label">
+                                            <%= tag %>
+                                        </span>
+                                        <div class="bar-track">
+                                            <div class="bar-fill"
+                                                style="width: <%= maxTagCount ? ((count / maxTagCount) * 100).toFixed(0) : 0 %>%">
+                                            </div>
+                                        </div>
+                                        <span class="bar-count">
+                                            <%= count %>
+                                        </span>
+                                    </div>
+                                    <% }) %>
+                            </div>
+                            <% } else { %>
+                                <span class="empty-inline">No project tags recorded.</span>
+                                <% } %>
+                    </div>
+
+                    <div class="analytics-section">
+                        <div class="section-title">Risks & Concerns</div>
+                        <% if (sortedRisks.length) { %>
+                            <ul class="freq-list">
+                                <% sortedRisks.forEach(([risk, count])=> { %>
+                                    <li>
+                                        <span class="freq-text">
+                                            <%= risk %>
+                                        </span>
+                                        <% if (count> 1) { %><span class="freq-badge">
+                                                <%= count %>×
+                                            </span>
+                                            <% } %>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } else { %>
+                                <span class="empty-inline">No risks recorded.</span>
+                                <% } %>
+                    </div>
+
+                    <div class="analytics-section last">
+                        <div class="section-title">Goals Mentioned</div>
+                        <% if (sortedGoals.length) { %>
+                            <ul class="freq-list">
+                                <% sortedGoals.forEach(([goal, count])=> { %>
+                                    <li>
+                                        <span class="freq-text">
+                                            <%= goal %>
+                                        </span>
+                                        <% if (count> 1) { %><span class="freq-badge">
+                                                <%= count %>×
+                                            </span>
+                                            <% } %>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } else { %>
+                                <span class="empty-inline">No goals recorded.</span>
+                                <% } %>
+                    </div>
+
+                    <% } %>
+
+    </div>

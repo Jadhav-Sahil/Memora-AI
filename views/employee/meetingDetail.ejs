@@ -1,0 +1,230 @@
+<% layout('./layouts/employee') %>
+
+    <div class="page">
+
+        <div class="page-header">
+            <div>
+                <span class="eyebrow">Transcript</span>
+                <h1>
+                    <%= m ? (m.fileName || "Untitled Meeting" ) : "Meeting Transcript" %>
+                </h1>
+            </div>
+            <a href="/employee/meeting-insight" class="btn-link">← Back to Insights</a>
+        </div>
+
+        <div class="detail-meta">
+            <% if (m) { %>
+                <span>
+                    <%= m.uploadedAt ? new Date(m.uploadedAt).toLocaleDateString("en-US", { day: "2-digit" ,
+                        month: "short" , year: "numeric" }) : "—" %>
+                </span>
+                <span class="dot">·</span>
+                <span>
+                    <%= m.fileType || "—" %>
+                </span>
+                <span class="dot">·</span>
+                <span>
+                    <%= m.fileSize ? m.fileSize.toFixed(2) + " MB" : "—" %>
+                </span>
+                <span class="dot">·</span>
+                <a class="inline-link" href="<%= m.fileUrl %>" target="_blank" rel="noopener">Download</a>
+                <span class="dot">·</span>
+                <span class="pill pill-<%= m.transcribeStatus %>">
+                    <%= m.transcribeStatus.toUpperCase() %>
+                </span>
+                <% } %>
+        </div>
+
+        <% if (t.meetingHealth && t.meetingHealth.score) { %>
+            <div class="detail-section">
+                <div class="detail-label">Meeting Health</div>
+                <div class="health-row">
+                    <span class="health-score">
+                        <%= t.meetingHealth.score %>/100
+                    </span>
+                    <% if (t.meetingHealth.clarity) { %><span class="tag-health">Clarity: <%= t.meetingHealth.clarity %>
+                        </span>
+                        <% } %>
+                            <% if (t.meetingHealth.actionability) { %><span class="tag-health">Actionability: <%=
+                                        t.meetingHealth.actionability %></span>
+                                <% } %>
+                                    <% if (t.meetingHealth.participation) { %><span class="tag-health">Participation:
+                                            <%= t.meetingHealth.participation %>
+                                        </span>
+                                        <% } %>
+                </div>
+                <% if (t.meetingHealth.notes) { %>
+                    <p class="health-notes">
+                        <%= t.meetingHealth.notes %>
+                    </p>
+                    <% } %>
+            </div>
+            <% } %>
+
+                <div class="detail-section">
+                    <div class="detail-label">Summary</div>
+                    <p class="detail-text">
+                        <%= t.summary || "No summary available." %>
+                    </p>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Full Transcript</div>
+                    <div class="transcript-full">
+                        <%= t.correctedTranscript || "No transcript available." %>
+                    </div>
+                </div>
+
+                <% if (t.projectTags && t.projectTags.length) { %>
+                    <div class="detail-section">
+                        <div class="detail-label">Project Tags</div>
+                        <div class="tag-cloud">
+                            <% t.projectTags.forEach(tag=> { %>
+                                <span class="tag-project">
+                                    <%= typeof tag==="string" ? tag : (tag.tag || tag.name || JSON.stringify(tag)) %>
+                                </span>
+                                <% }) %>
+                        </div>
+                    </div>
+                    <% } %>
+
+                        <% if (t.actionItems && t.actionItems.length) { %>
+                            <div class="detail-section">
+                                <div class="detail-label">Action Items</div>
+                                <ul class="plain-list">
+                                    <% t.actionItems.forEach(item=> { %>
+                                        <li>
+                                            <% if (typeof item==="string" ) { %>
+                                                <%= item %>
+                                                    <% } else if (item && typeof item==="object" ) { %>
+                                                        <%= item.task %>
+                                                            <% if (item.assignee) { %> — <%= item.assignee %>
+                                                                    <% } %>
+                                                                        <% if (item.deadline) { %> (<%= item.deadline %>
+                                                                                )<% } %>
+                                                                                    <% } %>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </div>
+                            <% } %>
+
+                                <% if (t.deadlines && t.deadlines.length) { %>
+                                    <div class="detail-section">
+                                        <div class="detail-label">Deadlines</div>
+                                        <ul class="plain-list">
+                                            <% t.deadlines.forEach(d=> { %>
+                                                <li>
+                                                    <% if (typeof d==="string" ) { %>
+                                                        <%= d %>
+                                                            <% } else if (d && typeof d==="object" ) { %>
+                                                                <%= d.description %>
+                                                                    <% if (d.date) { %> — <%= d.date %>
+                                                                            <% } %>
+                                                                                <% if (d.assignee) { %> (<%= d.assignee
+                                                                                        %>)<% } %>
+                                                                                            <% } %>
+                                                </li>
+                                                <% }) %>
+                                        </ul>
+                                    </div>
+                                    <% } %>
+
+                                        <% if (t.keyDecisions && t.keyDecisions.length) { %>
+                                            <div class="detail-section">
+                                                <div class="detail-label">Key Decisions</div>
+                                                <ul class="plain-list">
+                                                    <% t.keyDecisions.forEach(d=> { %>
+                                                        <li>
+                                                            <% if (typeof d==="string" ) { %>
+                                                                <%= d %>
+                                                                    <% } else if (d && typeof d==="object" ) { %>
+                                                                        <%= d.decision %>
+                                                                            <% if (d.reason) { %> — <%= d.reason %>
+                                                                                    <% } %>
+                                                                                        <% if (d.owner) { %> (<%=
+                                                                                                d.owner %>)<% } %>
+                                                                                                    <% } %>
+                                                        </li>
+                                                        <% }) %>
+                                                </ul>
+                                            </div>
+                                            <% } %>
+
+                                                <% if (t.goalsMentioned && t.goalsMentioned.length) { %>
+                                                    <div class="detail-section">
+                                                        <div class="detail-label">Goals Mentioned</div>
+                                                        <ul class="plain-list">
+                                                            <% t.goalsMentioned.forEach(g=> { %>
+                                                                <li>
+                                                                    <%= typeof g==="string" ? g : (g.goal ||
+                                                                        JSON.stringify(g)) %>
+                                                                </li>
+                                                                <% }) %>
+                                                        </ul>
+                                                    </div>
+                                                    <% } %>
+
+                                                        <% if (t.risksAndConcerns && t.risksAndConcerns.length) { %>
+                                                            <div class="detail-section">
+                                                                <div class="detail-label">Risks & Concerns</div>
+                                                                <ul class="plain-list warning-list">
+                                                                    <% t.risksAndConcerns.forEach(r=> { %>
+                                                                        <li>
+                                                                            <%= typeof r==="string" ? r : (r.risk ||
+                                                                                JSON.stringify(r)) %>
+                                                                        </li>
+                                                                        <% }) %>
+                                                                </ul>
+                                                            </div>
+                                                            <% } %>
+
+                                                                <% if (t.questionsRaised && t.questionsRaised.length) {
+                                                                    %>
+                                                                    <div class="detail-section">
+                                                                        <div class="detail-label">Questions Raised</div>
+                                                                        <ul class="plain-list">
+                                                                            <% t.questionsRaised.forEach(q=> { %>
+                                                                                <li>
+                                                                                    <% if (typeof q==="string" ) { %>
+                                                                                        <%= q %>
+                                                                                            <% } else if (q && typeof
+                                                                                                q==="object" ) { %>
+                                                                                                <%= q.question %>
+                                                                                                    <% if (q.raisedBy) {
+                                                                                                        %> — <%=
+                                                                                                            q.raisedBy
+                                                                                                            %>
+                                                                                                            <% } %>
+                                                                                                                <% if
+                                                                                                                    (q.resolved)
+                                                                                                                    { %>
+                                                                                                                    <span
+                                                                                                                        class="tag-resolved">Resolved</span>
+                                                                                                                    <% }
+                                                                                                                        %>
+                                                                                                                        <% }
+                                                                                                                            %>
+                                                                                </li>
+                                                                                <% }) %>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <% } %>
+
+                                                                        <% if (t.confidenceWarnings &&
+                                                                            t.confidenceWarnings.length) { %>
+                                                                            <div class="detail-section last">
+                                                                                <div class="detail-label">Confidence
+                                                                                    Warnings</div>
+                                                                                <ul class="plain-list warning-list">
+                                                                                    <% t.confidenceWarnings.forEach(w=>
+                                                                                        { %>
+                                                                                        <li>
+                                                                                            <%= typeof w==="string" ? w
+                                                                                                : (w.warning ||
+                                                                                                JSON.stringify(w)) %>
+                                                                                        </li>
+                                                                                        <% }) %>
+                                                                                </ul>
+                                                                            </div>
+                                                                            <% } %>

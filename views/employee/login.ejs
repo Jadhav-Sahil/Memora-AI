@@ -1,0 +1,179 @@
+<% layout('./layouts/boilerplate') %>
+
+    <title>Employee Login - Memora AI</title>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <!-- HEADER -->
+            <div class="auth-header">
+                <a href="/" class="lp-logo" style="justify-content:center;margin-bottom:1rem;">
+                    <i class="fa-solid fa-brain"></i> Memora AI
+                </a>
+
+                <h2>Employee Login</h2>
+                <p>Login securely using OTP verification</p>
+            </div>
+
+            <!-- ALERT -->
+            <div id="alertBox" style="display:none;margin-bottom:15px;"></div>
+
+            <!-- FORM -->
+            <form id="loginForm" action="/signup-employee" method="POST" class="needs-validation" novalidate>
+                <!--company name-->
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+
+                    <input type="text" name="c_name" id="c_name" class="form-input form-control"
+                        placeholder="Enter your name" required minlength="2" pattern="[A-Za-z ]+">
+
+                    <div class="invalid-feedback">
+                        Please enter a valid name.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+
+                    <input type="text" name="name" id="name" class="form-input form-control"
+                        placeholder="Enter your name" required minlength="2" pattern="[A-Za-z ]+" autocomplete="name">
+
+                    <div class="invalid-feedback">
+                        Please enter a valid name.
+                    </div>
+                </div>
+                <!-- EMAIL -->
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" id="email" class="form-input form-control"
+                        placeholder="Enter your email" required autocomplete="email">
+
+                    <div class="invalid-feedback">
+                        Please enter a valid email.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="password" class="form-input form-control" required>
+
+                        <button type="button" id="togglePassword" class="toggle-password">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+
+                    <input type="password" name="c_password" id="c_password" class="form-input form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+
+                    <select name="role" id="role" class="form-input form-control" required
+                        autocomplete="organization-title">
+
+                        <option value="" disabled selected>Select your role</option>
+
+                        <option value="employee">Employee</option>
+                        <option value="intern">Intern</option>
+                        <option value="manager">Manager</option>
+                        <option value="team_lead">Team Lead</option>
+                        <option value="hr">HR (Human Resources)</option>
+                        <option value="admin">Admin</option>
+                        <option value="developer">Developer</option>
+                        <option value="designer">Designer</option>
+                        <option value="tester">QA / Tester</option>
+                        <option value="support">Support Executive</option>
+                        <option value="sales">Sales Executive</option>
+                        <option value="marketing">Marketing Executive</option>
+
+                    </select>
+
+                    <div class="invalid-feedback">
+                        Please select your role.
+                    </div>
+                </div>
+                <!-- COMPANY CODE -->
+                <div class="form-group">
+                    <label class="form-label">Company Code</label>
+                    <input type="text" name="companyCode" id="companyCode" class="form-input form-control"
+                        placeholder="Enter company code" required>
+
+                    <div class="invalid-feedback">
+                        Company code is required.
+                    </div>
+                </div>
+
+                <!-- SEND OTP -->
+                <button type="button" id="sendOtpBtn" class="btn btn-primary w-100">
+                    Send OTP
+                </button>
+
+                <!-- OTP SECTION -->
+                <div id="otpSection" style="
+                display:none;
+                margin-top:20px;
+                padding-top:20px;
+                border-top:1px solid #ddd;
+            ">
+
+                    <div class="alert alert-info">
+                        OTP sent to <strong id="sentEmail"></strong>
+                    </div>
+
+                    <!-- OTP INPUT -->
+                    <div class="form-group">
+                        <label class="form-label">Enter OTP</label>
+                        <input type="text" id="otpInput" class="form-input form-control" maxlength="6"
+                            placeholder="6-digit OTP">
+                    </div>
+
+                    <!-- VERIFY -->
+                    <button type="button" id="verifyOtpBtn" class="btn btn-success w-100">
+                        Verify OTP
+                    </button>
+
+                    <!-- RESEND -->
+                    <div style="margin-top:15px;text-align:center;">
+                        <button type="button" id="resendBtn" class="btn btn-link" disabled>
+                            Resend OTP
+                        </button>
+                        <span id="timerText">(60s)</span>
+                    </div>
+
+                </div>
+
+                <!-- VERIFIED MESSAGE -->
+                <div id="verifiedBox" class="alert alert-success" style="display:none;margin-top:20px;">
+                    OTP Verified Successfully
+                </div>
+
+                <!-- FINAL LOGIN BUTTON -->
+                <button type="submit" id="loginBtn" class="btn btn-primary w-100" style="display:none;">
+                    Login to Dashboard
+                </button>
+
+            </form>
+
+            <!-- FOOTER -->
+            <div class="auth-footer-text" style="margin-top:20px;">
+
+                Don't have a company account?
+
+                <a href="/signup-company">
+                    Register Company
+                </a>
+                <div class="auth-footer-text" style="margin-top:20px;">
+                    Already registered with a company?
+                    <a href="/employee-login">Sign In</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="/js/employee.js"></script>
+    <script src="/js/a.js"></script>
+    <script src="/socket.io/socket.io.js"></script>

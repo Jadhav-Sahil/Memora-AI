@@ -1,0 +1,87 @@
+<% layout('./layouts/employee') %>
+
+    <div class="stats-row">
+
+        <div class="stat-block">
+            <span class="stat-label">Total Meetings</span>
+            <span class="stat-value">
+                <%= stats.totalMeetings %>
+            </span>
+        </div>
+
+        <div class="stat-block">
+            <span class="stat-label">Pending Action Items</span>
+            <span class="stat-value">
+                <%= stats.pendingActionItems %>
+            </span>
+        </div>
+
+        <div class="stat-block">
+            <span class="stat-label">This Week</span>
+            <span class="stat-value">
+                <%= stats.thisWeek || 0 %>
+            </span>
+        </div>
+
+        <div class="stat-block">
+            <span class="stat-label">Avg. Meeting Health</span>
+            <span class="stat-value">
+                <%= stats.avgHealth || '—' %>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+            <span class="section-label">Recent Meetings</span>
+            <a href="/employee/meetings" class="section-link">View all</a>
+        </div>
+
+        <% if (meetings && meetings.length) { %>
+            <table class="plain-table">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Uploaded</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% meetings.forEach(m=> { %>
+                        <tr>
+                            <td>
+                                <%= m.fileName || 'Untitled Meeting' %>
+                            </td>
+                            <td>
+                                <%= new Date(m.uploadedAt).toLocaleDateString() %>
+                            </td>
+                            <td>
+                                <%= m.fileSize ? m.fileSize.toFixed(2) + " MB" : "—" %>
+                            </td>
+                            <td>
+                                <span class="status-pill status-<%= m.transcribeStatus %>">
+                                    <%= m.transcribeStatus %>
+                                </span>
+                            </td>
+                            <td class="row-action">
+                                <a href="/employee/meetings/<%= m._id %>">
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="bi bi-camera-video"></i>
+                    <p>No meetings yet. Upload your first meeting to get started.</p>
+                    <a href="/employee/upload" class="empty-cta">Upload Meeting</a>
+                </div>
+                <% } %>
+
+    </div>

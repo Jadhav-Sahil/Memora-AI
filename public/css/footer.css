@@ -1,0 +1,52 @@
+/* footer.css */
+
+:root {
+    --footer-height: 44px;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* reserve space so content never sits under the fixed footer,
+   whether the page is short or long */
+body {
+    padding-bottom: var(--footer-height);
+    box-sizing: border-box;
+}
+
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--footer-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: #ffffff;
+    border-top: 1px solid #000000;
+    font-size: 12px;
+    font-weight: 500;
+    color: #000000;
+    box-sizing: border-box;
+    z-index: 500;
+}
+
+.footer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2ecc71;
+    display: inline-block;
+    flex-shrink: 0;
+}

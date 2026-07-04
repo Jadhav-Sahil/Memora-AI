@@ -1,0 +1,90 @@
+<% layout('./layouts/employee') %>
+
+    <div class="section">
+
+        <div class="section-header">
+            <span class="section-label">All Meetings</span>
+            <a href="/employee/dashboard" class="section-link">Back to Dashboard</a>
+        </div>
+
+        <% if (meetings && meetings.length> 0) { %>
+
+            <table class="plain-table">
+                <thead>
+                    <tr>
+                        <th>Meeting</th>
+                        <th>Uploaded</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <% meetings.forEach(m=> { %>
+
+                        <tr>
+
+                            <td>
+                                <%= m.fileName || "Untitled Meeting" %>
+                            </td>
+
+                            <td>
+                                <%= m.uploadedAt ? new Date(m.uploadedAt).toLocaleDateString() : "—" %>
+                            </td>
+
+                            <td>
+                                <% let sizeLabel="—" ; if (m.fileSize) { const mb=m.fileSize / (1024 * 1024); if (mb>=
+                                    1) {
+                                    sizeLabel = mb.toFixed(1) + " MB";
+                                    } else {
+                                    sizeLabel = (m.fileSize / 1024).toFixed(0) + " KB";
+                                    }
+                                    %>
+
+                                    <%= sizeLabel %>
+
+                                        <% } else { %>
+
+                                            —
+
+                                            <% } %>
+                            </td>
+
+                            <td>
+                                <span class="status-pill status-<%= m.transcribeStatus || 'pending' %>">
+                                    <%= m.transcribeStatus || "Pending" %>
+                                </span>
+                            </td>
+
+                            <td class="row-action">
+                                <a href="/employee/meetings/<%= m._id %>">
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        <% }) %>
+
+                </tbody>
+
+            </table>
+
+            <% } else { %>
+
+                <div class="empty-state">
+                    <i class="bi bi-camera-video"></i>
+                    <p>No meetings found.</p>
+
+                    <a href="/employee/upload" class="empty-cta">
+                        Upload Meeting
+                    </a>
+                </div>
+
+                <% } %>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>

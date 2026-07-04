@@ -1,0 +1,64 @@
+<% layout('./layouts/dashboard') %>
+    <link rel="stylesheet" href="/css/a.css">
+    <link rel="stylesheet" href="/css/terminal.css">
+
+    <div class="mac-window">
+
+        <div class="mac-header">
+            <div class="title">
+                <i class="fa-solid fa-brain"></i>
+                Memora AI — Transcription Engine
+            </div>
+        </div>
+
+        <div class="terminal-body">
+
+            <div class="file-info">
+                <i class="fa-solid fa-file-audio"></i>
+                Processing File:
+                <strong>
+                    <%= meeting.fileName %>
+                </strong>
+            </div>
+            <!-- STATUS -->
+            <div id="status">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Ready to process audio...
+            </div>
+
+            <!-- LOADER -->
+            <div id="loader" style="display:none; margin-top:10px;">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span id="loaderText">Initializing...</span>
+            </div>
+
+            <!-- LOGS -->
+            <div id="logs"></div>
+
+            <!-- BUTTON -->
+            <button id="startBtn" data-id="<%= meeting._id %>">
+                <i class="fa-solid fa-play"></i>
+                Start Transcription
+            </button>
+
+            <!-- RESULT -->
+            <div id="result"></div>
+
+        </div>
+    </div>
+
+    <!--
+        FIX: these two lines were missing entirely.
+        terminal.js references the global `socket` variable as soon as it
+        loads (socket.off("progress") / socket.on("progress", ...)), so
+        without the Socket.IO client library and an actual `socket`
+        instance, the browser throws "socket is not defined" the instant
+        terminal.js runs. That error kills the rest of the script — including
+        the line that attaches the click listener to #startBtn — which is
+        why clicking "Start Transcription" did nothing.
+
+        Order matters: the client library and `const socket = io();` MUST
+        load before terminal.js.
+    -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/terminal.js"></script>

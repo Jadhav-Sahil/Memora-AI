@@ -1,0 +1,84 @@
+<nav class="employee-navbar">
+
+    <!-- Brand -->
+    <div class="navbar-left">
+
+        <a href="/employee/dashboard" class="navbar-brand">
+
+            <div class="logo-icon">
+                M
+            </div>
+
+            <div class="brand-text">
+                <h3>Memora AI</h3>
+                <span>Employee Panel</span>
+            </div>
+
+        </a>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="navbar-center" id="navbarCenter">
+
+        <a href="/employee/dashboard" class="nav-item <%= currentPage === 'dashboard' ? 'active' : '' %>">
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+
+        <a href="/employee/meeting-insight" class="nav-item <%= currentPage === 'meetings' ? 'active' : '' %>">
+            <i class="bi bi-camera-video-fill"></i>
+            <span>Meeting Insights</span>
+        </a>
+
+        <a href="/employee/action-items" class="nav-item <%= currentPage === 'tasks' ? 'active' : '' %>">
+            <i class="bi bi-list-check"></i>
+            <span>Action Items</span>
+        </a>
+
+        <a href="/employee/analytics" class="nav-item <%= currentPage === 'analytics' ? 'active' : '' %>">
+            <i class="bi bi-bar-chart-fill"></i>
+            <span>Analysis</span>
+        </a>
+
+    </div>
+
+    <!-- Right -->
+    <div class="navbar-right">
+
+
+        <!-- Profile -->
+        <div class="profile-menu">
+
+            <button class="action-btn profile-btn">
+                <div class="avatar">
+                    <%= employee.name.charAt(0).toUpperCase() %>
+                </div>
+                <span>
+                    <%= employee.name %>
+                </span>
+                <i class="bi bi-chevron-down"></i>
+            </button>
+
+            <div class="profile-dropdown">
+                <a href="/employee/profile">
+                    <i class="bi bi-person-circle"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="/employee/logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Hamburger -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+            <i class="bi bi-list"></i>
+        </button>
+
+    </div>
+
+</nav>
