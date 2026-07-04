@@ -8,21 +8,14 @@ const router = express.Router();
    NODEMAILER SETUP
 ========================= */
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.BREVO_EMAIL,
+        pass: process.env.BREVO_SMTP_KEY,
     },
 });
-
-transporter.verify((err) => {
-    if (err) {
-        console.error("MAIL ERROR:", err);
-    } else {
-        console.log("Mail server ready");
-    }
-});
-
 /* =========================
    OTP GENERATOR
 ========================= */
