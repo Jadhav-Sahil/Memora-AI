@@ -1,5 +1,4 @@
-const express = require("express");
-const nodemailer = require("nodemailer");
+const express = require("express")
 const Employee = require("../models/employee");
 
 const router = express.Router();
@@ -7,15 +6,7 @@ const router = express.Router();
 /* =========================
    NODEMAILER SETUP
 ========================= */
-const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.BREVO_EMAIL,
-        pass: process.env.BREVO_SMTP_KEY,
-    },
-});
+const transporter = require("./mailer");
 /* =========================
    OTP GENERATOR
 ========================= */
