@@ -1,25 +1,27 @@
-const express = require("express")
+const express = require("express");
 const Employee = require("../models/employee");
-
 const router = express.Router();
 
+const sendOTP = require("../utils/mailer"); // ✅ Brevo API mailer
+
 /* =========================
-   NODEMAILER SETUP
+   CONFIG
 ========================= */
-const transporter = require("./mailer");
+const OTP_EXPIRY = 2 * 60 * 1000; // 2 minutes
+const MAX_ATTEMPTS = 3;
+
 /* =========================
-   OTP GENERATOR
+   GENERATE OTP
 ========================= */
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 /* =========================
-   SEND OTP
+   SEND OTP (FORGOT PASSWORD)
 ========================= */
 router.post("/send-otp-forgot", async (req, res) => {
     try {
-
         const { email } = req.body;
 
         if (!email) {
@@ -44,18 +46,13 @@ router.post("/send-otp-forgot", async (req, res) => {
 
         const otp = generateOTP();
 
-        req.session.otp = otp;
         req.session.email = normalizedEmail;
+        req.session.otp = otp;
         req.session.otpTime = Date.now();
-        req.session.otpVerified = false;
         req.session.otpAttempts = 0;
+        req.session.otpVerified = false;
 
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: normalizedEmail,
-            subject: "Memora AI Employee Password Reset OTP",
-            text: `Your OTP is ${otp}. It is valid for 1 minute.`,
-        });
+        await sendOTP(normalizedEmail, otp);
 
         return res.json({
             success: true,
@@ -63,14 +60,12 @@ router.post("/send-otp-forgot", async (req, res) => {
         });
 
     } catch (err) {
-
-        console.error(err);
+        console.error("SEND OTP ERROR:", err);
 
         return res.status(500).json({
             success: false,
             message: "Failed to send OTP",
         });
-
     }
 });
 
@@ -78,33 +73,23 @@ router.post("/send-otp-forgot", async (req, res) => {
    VERIFY OTP
 ========================= */
 router.post("/verify-otp-forgot", (req, res) => {
-
     try {
-
         const { otp } = req.body;
 
-        if (!req.session.otp) {
+        const storedOtp = req.session.otp;
+        const otpTime = req.session.otpTime;
+
+        if (!storedOtp || !otpTime) {
             return res.status(400).json({
                 success: false,
-                message: "Please send OTP first",
+                message: "OTP not found. Please request again.",
             });
         }
 
-        if (!req.session.otpTime) {
-            return res.status(400).json({
-                success: false,
-                message: "OTP session expired",
-            });
-        }
-
-        const expired =
-            Date.now() - req.session.otpTime >
-            60 * 1000;
-
-        if (expired) {
-
-            delete req.session.otp;
-            delete req.session.otpTime;
+        // expiry check
+        if (Date.now() - otpTime > OTP_EXPIRY) {
+            req.session.otp = null;
+            req.session.otpTime = null;
 
             return res.status(400).json({
                 success: false,
@@ -112,34 +97,31 @@ router.post("/verify-otp-forgot", (req, res) => {
             });
         }
 
-        req.session.otpAttempts =
-            (req.session.otpAttempts || 0) + 1;
+        // attempts
+        req.session.otpAttempts = (req.session.otpAttempts || 0) + 1;
 
-        if (req.session.otpAttempts > 3) {
+        if (req.session.otpAttempts > MAX_ATTEMPTS) {
+            req.session.otp = null;
+            req.session.otpTime = null;
 
-            delete req.session.otp;
-            delete req.session.otpTime;
-
-            return res.status(400).json({
+            return res.status(429).json({
                 success: false,
-                message: "Too many attempts. Please resend OTP.",
+                message: "Too many attempts",
             });
-
         }
 
-        if (String(otp) !== String(req.session.otp)) {
-
+        if (otp !== storedOtp) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid OTP",
             });
-
         }
 
+        // success
         req.session.otpVerified = true;
 
-        delete req.session.otp;
-        delete req.session.otpTime;
+        req.session.otp = null;
+        req.session.otpTime = null;
         req.session.otpAttempts = 0;
 
         return res.json({
@@ -148,31 +130,26 @@ router.post("/verify-otp-forgot", (req, res) => {
         });
 
     } catch (err) {
-
-        console.error(err);
+        console.error("VERIFY OTP ERROR:", err);
 
         return res.status(500).json({
             success: false,
             message: "Something went wrong",
         });
-
     }
-
 });
 
 /* =========================
    RESEND OTP
 ========================= */
 router.post("/resend-otp-forgot", async (req, res) => {
-
     try {
-
         const email = req.session.email;
 
         if (!email) {
             return res.status(400).json({
                 success: false,
-                message: "Email session not found",
+                message: "Session expired",
             });
         }
 
@@ -180,15 +157,10 @@ router.post("/resend-otp-forgot", async (req, res) => {
 
         req.session.otp = otp;
         req.session.otpTime = Date.now();
-        req.session.otpVerified = false;
         req.session.otpAttempts = 0;
+        req.session.otpVerified = false;
 
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Memora AI Employee Password Reset OTP",
-            text: `Your new OTP is ${otp}. It is valid for 1 minute.`,
-        });
+        await sendOTP(email, otp);
 
         return res.json({
             success: true,
@@ -196,16 +168,13 @@ router.post("/resend-otp-forgot", async (req, res) => {
         });
 
     } catch (err) {
-
-        console.error(err);
+        console.error("RESEND OTP ERROR:", err);
 
         return res.status(500).json({
             success: false,
             message: "Failed to resend OTP",
         });
-
     }
-
 });
 
 module.exports = router;

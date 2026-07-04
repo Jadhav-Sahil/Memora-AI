@@ -1,21 +1,23 @@
 const express = require("express");
-
 const router = express.Router();
 
-/* =========================
-   NODEMAILER SETUP
-========================= */
-const transporter = require("./mailer");
+const sendOTP = require("../utils/mailer"); // Brevo API mailer
 
 /* =========================
-   OTP GENERATOR
+   CONFIG
+========================= */
+const OTP_EXPIRY = 2 * 60 * 1000;
+const MAX_ATTEMPTS = 3;
+
+/* =========================
+   GENERATE OTP
 ========================= */
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 /* =========================
-   SEND OTP
+   SEND OTP (EMPLOYEE)
 ========================= */
 router.post("/send-otp-employee", async (req, res) => {
     try {
@@ -30,21 +32,13 @@ router.post("/send-otp-employee", async (req, res) => {
 
         const otp = generateOTP();
 
-        req.session.otp = otp;
         req.session.email = email;
+        req.session.otp = otp;
         req.session.otpTime = Date.now();
-        req.session.otpVerified = false;
         req.session.otpAttempts = 0;
+        req.session.otpVerified = false;
 
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Memora AI OTP Verification",
-            text: `Your OTP is ${otp}. It is valid for 1 minutes.`,
-        });
-
-        console.log("Email Sent:", info.messageId);
-        console.log("OTP:", otp);
+        await sendOTP(email, otp);
 
         return res.json({
             success: true,
@@ -71,60 +65,49 @@ router.post("/verify-otp-employee", (req, res) => {
         const storedOtp = req.session.otp;
         const otpTime = req.session.otpTime;
 
-        if (!storedOtp) {
+        if (!storedOtp || !otpTime) {
             return res.status(400).json({
                 success: false,
-                message: "No OTP found. Send OTP first.",
+                message: "OTP not found. Please request again.",
             });
         }
 
-        if (!otpTime) {
-            return res.status(400).json({
-                success: false,
-                message: "OTP session expired.",
-            });
-        }
-
-        // 2 minutes expiry
-        const isExpired =
-            Date.now() - otpTime > 1 * 60 * 1000;
-
-        if (isExpired) {
-            delete req.session.otp;
-            delete req.session.otpTime;
+        // expiry check
+        if (Date.now() - otpTime > OTP_EXPIRY) {
+            req.session.otp = null;
+            req.session.otpTime = null;
 
             return res.status(400).json({
                 success: false,
-                message: "OTP expired. Please resend OTP.",
+                message: "OTP expired",
             });
         }
 
-        req.session.otpAttempts =
-            (req.session.otpAttempts || 0) + 1;
+        // attempts
+        req.session.otpAttempts = (req.session.otpAttempts || 0) + 1;
 
-        if (req.session.otpAttempts > 3) {
+        if (req.session.otpAttempts > MAX_ATTEMPTS) {
+            req.session.otp = null;
+            req.session.otpTime = null;
 
-            delete req.session.otp;
-            delete req.session.otpTime;
-
-            return res.status(400).json({
+            return res.status(429).json({
                 success: false,
-                message:
-                    "Too many attempts. Please resend OTP.",
+                message: "Too many attempts",
             });
         }
 
-        if (String(otp) !== String(storedOtp)) {
+        if (otp !== storedOtp) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid OTP",
             });
         }
 
+        // success
         req.session.otpVerified = true;
 
-        delete req.session.otp;
-        delete req.session.otpTime;
+        req.session.otp = null;
+        req.session.otpTime = null;
         req.session.otpAttempts = 0;
 
         return res.json({
@@ -137,7 +120,7 @@ router.post("/verify-otp-employee", (req, res) => {
 
         return res.status(500).json({
             success: false,
-            message: "Something went wrong",
+            message: "Server error",
         });
     }
 });
@@ -152,7 +135,7 @@ router.post("/resend-otp-employee", async (req, res) => {
         if (!email) {
             return res.status(400).json({
                 success: false,
-                message: "Email session not found",
+                message: "Session expired",
             });
         }
 
@@ -160,18 +143,10 @@ router.post("/resend-otp-employee", async (req, res) => {
 
         req.session.otp = otp;
         req.session.otpTime = Date.now();
-        req.session.otpVerified = false;
         req.session.otpAttempts = 0;
+        req.session.otpVerified = false;
 
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Memora AI OTP Verification",
-            text: `Your new OTP is ${otp}. It is valid for 2 minutes.`,
-        });
-
-        console.log("Resend Email:", info.messageId);
-        console.log("New OTP:", otp);
+        await sendOTP(email, otp);
 
         return res.json({
             success: true,
