@@ -4,7 +4,9 @@
 
 function toggleMenu() {
     const menu = document.getElementById("mobileMenu");
-    menu.classList.toggle("show");
+    if (menu) {
+        menu.classList.toggle("show");
+    }
 }
 
 //hamburger Option
@@ -12,16 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuBtn = document.getElementById("menuBtn");
     const menu = document.getElementById("mobileMenu");
 
-    menuBtn.addEventListener("click", () => {
-        menu.classList.toggle("active");
-    });
+    if (menuBtn && menu) {
+        menuBtn.addEventListener("click", () => {
+            menu.classList.toggle("active");
+        });
 
-    // close menu when clicking outside
-    document.addEventListener("click", (e) => {
-        if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-            menu.classList.remove("active");
-        }
-    });
+        // close menu when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.remove("active");
+            }
+        });
+    }
 });
 
 // ===============================
@@ -72,6 +76,11 @@ let timerInterval = null;
 
 function showAlert(message, type = "success") {
 
+    if (!alertBox) {
+        console.log(message);
+        return;
+    }
+
     alertBox.style.display = "block";
 
     alertBox.className =
@@ -107,6 +116,12 @@ function showAlert(message, type = "success") {
 
 function startTimer() {
 
+    if (!resendBtn) return;
+
+    const timerText = document.getElementById("timerText");
+
+    if (!timerText) return;
+
     if (timerInterval) {
         clearInterval(timerInterval);
     }
@@ -114,9 +129,6 @@ function startTimer() {
     let seconds = 60;
 
     resendBtn.disabled = true;
-
-    const timerText =
-        document.getElementById("timerText");
 
     timerText.innerText = "(60s)";
 
@@ -146,17 +158,15 @@ if (sendOtpBtn) {
 
     sendOtpBtn.addEventListener("click", async () => {
 
-        const companyName =
-            document.getElementById("companyName").value;
+        const companyNameEl = document.getElementById("companyName");
+        const emailEl = document.getElementById("email");
+        const passwordEl = document.getElementById("password");
+        const cPasswordEl = document.getElementById("c_password");
 
-        const email =
-            document.getElementById("email").value;
-
-        const password =
-            document.getElementById("password").value;
-
-        const cPassword =
-            document.getElementById("c_password").value;
+        const companyName = companyNameEl ? companyNameEl.value : "";
+        const email = emailEl ? emailEl.value : "";
+        const password = passwordEl ? passwordEl.value : "";
+        const cPassword = cPasswordEl ? cPasswordEl.value : "";
 
         if (
             !companyName ||
@@ -199,11 +209,14 @@ if (sendOtpBtn) {
 
                 showAlert(data.message);
 
-                otpSection.style.display = "block";
+                if (otpSection) {
+                    otpSection.style.display = "block";
+                }
 
-                document.getElementById(
-                    "sentEmail"
-                ).innerText = email;
+                const sentEmail = document.getElementById("sentEmail");
+                if (sentEmail) {
+                    sentEmail.innerText = email;
+                }
 
                 startTimer();
 
@@ -235,10 +248,8 @@ if (verifyOtpBtn) {
 
     verifyOtpBtn.addEventListener("click", async () => {
 
-        const otp =
-            document.getElementById(
-                "otpInput"
-            ).value.trim();
+        const otpInputEl = document.getElementById("otpInput");
+        const otp = otpInputEl ? otpInputEl.value.trim() : "";
 
         if (!otp) {
             return showAlert(
@@ -273,19 +284,23 @@ if (verifyOtpBtn) {
                     "OTP Verified Successfully"
                 );
 
-                verifiedBox.style.display =
-                    "block";
+                if (verifiedBox) {
+                    verifiedBox.style.display = "block";
+                }
 
-                registerBtn.style.display =
-                    "block";
+                if (registerBtn) {
+                    registerBtn.style.display = "block";
+                }
 
                 verifyOtpBtn.disabled = true;
 
-                document.getElementById(
-                    "otpInput"
-                ).disabled = true;
+                if (otpInputEl) {
+                    otpInputEl.disabled = true;
+                }
 
-                resendBtn.disabled = true;
+                if (resendBtn) {
+                    resendBtn.disabled = true;
+                }
 
             } else {
 
@@ -394,14 +409,12 @@ if (signupForm) {
     );
 }
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const closeButtons = document.querySelectorAll(".btn-close");
 
     closeButtons.forEach(btn => {
         btn.addEventListener("click", function () {
-            const alert = this.closest(".alert");
+            const alert = btn.closest(".alert");
             if (alert) alert.remove();
         });
     });
